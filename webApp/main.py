@@ -1,34 +1,40 @@
 import os
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for, abort
 from werkzeug.utils import secure_filename
-
-UPLOAD_FOLDER = '/UPLOAD_FOLDER'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+#from app import app
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-@app.route('/', methods=['GET', 'POST'])
+os.makedirs(os.path.join(app.instance_path, ''), exist_ok=True)
+
+#app.config['UPLOAD_PATH'] = 'U'
+app.config['UPLOAD_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
+
+#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+#def allowed_file(filename):
+#    return '.' in filename and \
+ #          filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('download_file', name='filename'))
-
     return render_template("index.html")
+@app.route('/image', methods=['GET','POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        #f.save(secure_filename(f.filename))
+
+        f.save(os.path.join(app.instance_path, 'photo', secure_filename(f.filename)))
+    #uploaded_file = request.files['file']
+    #filename = secure_filename(uploaded_file.filename)
+    #if filename != '':
+    #    file_ext = os.path.splitext(filename)[1]
+    #    if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+    #        abort(400)
+    #    uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    #return redirect(url_for('index'))
+    return 'File uploaded'
+
 if __name__ == "__main__":
     app.run()
+
