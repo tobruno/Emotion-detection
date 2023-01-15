@@ -8,7 +8,7 @@ app = Flask(__name__)
 os.makedirs(os.path.join(app.instance_path, ''), exist_ok=True)
 
 #app.config['UPLOAD_PATH'] = 'U'
-app.config['UPLOAD_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
+app.config['UPLOAD_EXTENSIONS'] = {'.png', '.jpg', '.jpeg'}
 
 #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -22,9 +22,12 @@ def index():
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
-        #f.save(secure_filename(f.filename))
-
-        f.save(os.path.join(app.instance_path, 'photo', secure_filename(f.filename)))
+        filename = secure_filename(f.filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+                abort(400)
+            f.save(os.path.join(app.instance_path, 'photo', filename))
     #uploaded_file = request.files['file']
     #filename = secure_filename(uploaded_file.filename)
     #if filename != '':
@@ -33,7 +36,7 @@ def upload_file():
     #        abort(400)
     #    uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     #return redirect(url_for('index'))
-    return 'File uploaded'
+    return 'Zdjęcie załadowane!'
 
 if __name__ == "__main__":
     app.run()
