@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Emotion detection result</title>
+		<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+	</head>
+	<body>
+		<h1> Zdjęcie załadowane! <h1>
+		<br>
+		<a  href="http://127.0.0.1:5000/result"> <button>Odczytaj wynik</button>
+		</a>
+	</body>
+</html>

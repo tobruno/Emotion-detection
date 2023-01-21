@@ -1,11 +1,12 @@
 body{
-	background-color: slategray;
+	background-color: #C71585;
+	opacity: 0.9;
 	text-align: center;
 }
 h1{
 	color: white;
-	font-family: Shanti;
-	font-size: 2.5em;
+	font-family: Helvetica;
+	font-size: 2.1em;
 	margin: 20px
 	}
 input {
@@ -14,7 +15,7 @@ input {
 	margin: 10px;
 	border: none;
 	border-radius: 5px;
-	font-family: Shanti;
+	font-family: Helvetica;
 	text-align: center;
 	font-size: 0.5em;
 }
@@ -22,8 +23,11 @@ input:focus{
 	border: solid 5px #00FFCE;
 }
 
+button{
+	font-family: Helvetica
+	
 #image{
-	background-color: palevioletred;
+	background-color: #C71585;
 	color: white;
 	width: 100px;
 }
